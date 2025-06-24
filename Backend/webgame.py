@@ -1,3 +1,4 @@
+
 class GameState:
     def __init__(self, tablero=None, turno="X"):
         self.tablero = tablero or [["", "", ""], ["", "", ""], ["", "", ""]]
@@ -121,3 +122,4 @@ class AlfaBeta:
 
         _, jugada = alphabeta(estado, estado.turno, float("-inf"), float("inf"))
         return jugada
+

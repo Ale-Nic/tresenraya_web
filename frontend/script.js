@@ -1,3 +1,4 @@
+
 let modo = "";
 let tableroActual = [];
 let turnoActual = "X";
@@ -77,3 +78,4 @@ function jugar(i, j) {
 function reiniciar() {
   iniciar(modo);
 }
+

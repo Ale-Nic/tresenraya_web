@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify, send_from_directory
 from Backend.webgame import GameState, Minimax, AlfaBeta
 
@@ -52,3 +53,4 @@ def movimiento():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
