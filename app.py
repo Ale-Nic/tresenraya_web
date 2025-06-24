@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
-from Backend.webgame import GameState, Minimax, AlfaBeta
+from Backend.modulos import Estado, MinMax, AlfaBeta  # Usa tus módulos originales
+import os
 
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 
@@ -16,8 +17,9 @@ def iniciar_juego():
     global estado, modo_juego
     datos = request.json
     modo_juego = datos.get('modo')
-    estado = GameState()
-    return jsonify({"mensaje": f"Juego iniciado en modo {modo_juego}.", "tablero": estado.tablero})
+    estado = Estado.Estado([["", "", ""], ["", "", ""], ["", "", ""]])
+  # Nueva instancia del juego
+    return jsonify({"mensaje": f"Juego iniciado en modo {modo_juego}."})
 
 @app.route('/movimiento', methods=['POST'])
 def movimiento():
@@ -26,22 +28,18 @@ def movimiento():
     fila = datos.get('fila')
     columna = datos.get('columna')
 
-    if estado.tablero[fila][columna] == "" and not estado.es_terminal():
-        estado.tablero[fila][columna] = estado.turno
+    jugador = estado.turno
+    estado.tablero[fila][columna] = jugador
+    estado.cambiar_turno()
 
-        if not estado.es_terminal():
-            estado.cambiar_turno()
-
-            if modo_juego == 'minimax':
-                jugada = Minimax.elegir_jugada(estado)
-                estado.tablero[jugada[0]][jugada[1]] = estado.turno
-                if not estado.es_terminal():
-                    estado.cambiar_turno()
-            elif modo_juego == 'alfabeta':
-                jugada = AlfaBeta.elegir_jugada(estado)
-                estado.tablero[jugada[0]][jugada[1]] = estado.turno
-                if not estado.es_terminal():
-                    estado.cambiar_turno()
+    if modo_juego == 'minimax' and not estado.es_terminal():
+        jugada = MinMax.elegir_jugada(estado)
+        estado.tablero[jugada[0]][jugada[1]] = estado.turno
+        estado.cambiar_turno()
+    elif modo_juego == 'alfabeta' and not estado.es_terminal():
+        jugada = AlfaBeta.elegir_jugada(estado)
+        estado.tablero[jugada[0]][jugada[1]] = estado.turno
+        estado.cambiar_turno()
 
     return jsonify({
         "tablero": estado.tablero,
