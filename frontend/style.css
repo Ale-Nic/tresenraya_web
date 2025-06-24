@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 40px;
+  background-color: #f5f5f5;
+}
+
+#modo button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 5px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.celda {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border: 2px solid #444;
+  font-size: 48px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.celda:hover {
+  background-color: #e0e0e0;
+}
+
+#estado {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #333;
+}
