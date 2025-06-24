@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
-from Backend.modulos import Estado, MinMax, AlfaBeta  # Usa tus módulos originales
-import os
+from Backend.webgame import GameState, Minimax, AlfaBeta
 
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 
@@ -17,9 +16,8 @@ def iniciar_juego():
     global estado, modo_juego
     datos = request.json
     modo_juego = datos.get('modo')
-    estado = Estado.Estado([["", "", ""], ["", "", ""], ["", "", ""]])
-  # Nueva instancia del juego
-    return jsonify({"mensaje": f"Juego iniciado en modo {modo_juego}."})
+    estado = GameState()
+    return jsonify({"mensaje": f"Juego iniciado en modo {modo_juego}.", "tablero": estado.tablero})
 
 @app.route('/movimiento', methods=['POST'])
 def movimiento():
@@ -28,18 +26,22 @@ def movimiento():
     fila = datos.get('fila')
     columna = datos.get('columna')
 
-    jugador = estado.turno
-    estado.tablero[fila][columna] = jugador
-    estado.cambiar_turno()
+    if estado.tablero[fila][columna] == "" and not estado.es_terminal():
+        estado.tablero[fila][columna] = estado.turno
 
-    if modo_juego == 'minimax' and not estado.es_terminal():
-        jugada = MinMax.elegir_jugada(estado)
-        estado.tablero[jugada[0]][jugada[1]] = estado.turno
-        estado.cambiar_turno()
-    elif modo_juego == 'alfabeta' and not estado.es_terminal():
-        jugada = AlfaBeta.elegir_jugada(estado)
-        estado.tablero[jugada[0]][jugada[1]] = estado.turno
-        estado.cambiar_turno()
+        if not estado.es_terminal():
+            estado.cambiar_turno()
+
+            if modo_juego == 'minimax':
+                jugada = Minimax.elegir_jugada(estado)
+                estado.tablero[jugada[0]][jugada[1]] = estado.turno
+                if not estado.es_terminal():
+                    estado.cambiar_turno()
+            elif modo_juego == 'alfabeta':
+                jugada = AlfaBeta.elegir_jugada(estado)
+                estado.tablero[jugada[0]][jugada[1]] = estado.turno
+                if not estado.es_terminal():
+                    estado.cambiar_turno()
 
     return jsonify({
         "tablero": estado.tablero,
