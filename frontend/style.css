@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
 }
 
+
 .container {
   max-width: 500px;
   margin: 0 auto;
@@ -59,6 +60,10 @@ body {
 
 .celda:hover {
   background-color: #f0f0f0;
+}
+
+#reiniciar {
+  margin-top: 20px;
 }
 
 #reiniciar {

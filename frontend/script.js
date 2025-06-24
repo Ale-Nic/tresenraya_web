@@ -1,4 +1,5 @@
 let modo = "";
+
 let tableroActual = [];
 let turnoActual = "X";
 
@@ -14,9 +15,6 @@ function iniciar(m) {
     .then(data => {
       document.getElementById("modo").style.display = "none";
       document.getElementById("juego").style.display = "block";
-      tableroActual = data.tablero;
-      turnoActual = "X";
-      dibujarTablero(tableroActual);
       document.getElementById("estado").textContent = "Turno de X";
       document.getElementById("estado").dataset.finalizado = "";
     });
@@ -71,6 +69,17 @@ function jugar(i, j) {
           document.getElementById("estado").textContent = `Turno de ${data.turno}`;
         }
       }, modo === "humano" ? 0 : 600);
+      dibujarTablero(data.tablero);
+
+      if (data.ganador) {
+        document.getElementById("estado").textContent = `Ganó: ${data.ganador}`;
+        document.getElementById("estado").dataset.finalizado = "true";
+      } else if (data.empate) {
+        document.getElementById("estado").textContent = "Empate";
+        document.getElementById("estado").dataset.finalizado = "true";
+      } else {
+        document.getElementById("estado").textContent = `Turno de ${data.turno}`;
+      }
     });
 }
 
