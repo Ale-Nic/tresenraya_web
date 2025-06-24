@@ -1,1 +1,29 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tres en Raya</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+  <h1>Tres en Raya</h1>
+
+  <div id="modo" class="panel">
+    <h3>Elige un modo de juego:</h3>
+    <button onclick="iniciar('humano')">Humano vs Humano</button>
+    <button onclick="iniciar('minimax')">Fácil (Minimax)</button>
+    <button onclick="iniciar('alfabeta')">Difícil (AlfaBeta)</button>
+  </div>
+
+    <div id="juego" class="panel" style="display:none;">
+      <div id="tablero"></div>
+      <p id="estado"></p>
+      <button id="reiniciar" onclick="reiniciar()">Reiniciar</button>
+    </div>
+
+    <script src="script.js"></script>
+    </div>
+</body>
+</html>
